@@ -21,7 +21,8 @@ RUN apt-get update \
         lsb-release \
         gnupg \
         openssl \
-        zip
+        zip \
+        unzip
 
 WORKDIR /tmp
 
@@ -60,6 +61,12 @@ RUN apt-get update && apt-get install -y --no-install-recommends docker-ce docke
 
 # Powershell Az
 RUN pwsh -c "Install-Module Az -Force"
+
+# Sql Package
+RUN curl -Lq https://go.microsoft.com/fwlink/?linkid=873926 -o sqlpackage-linux-x64-latest.zip
+RUN unzip sqlpackage-linux-x64-latest.zip -d /opt/sqlpackage
+RUN chmod a+x /opt/sqlpackage/sqlpackage
+ENV PATH="/opt/sqlpackage:${PATH}"
 
 WORKDIR /azp
 
