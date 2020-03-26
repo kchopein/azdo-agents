@@ -67,6 +67,10 @@ RUN curl -Lq https://go.microsoft.com/fwlink/?linkid=873926 -o sqlpackage-linux-
 RUN unzip sqlpackage-linux-x64-latest.zip -d /opt/sqlpackage
 RUN chmod a+x /opt/sqlpackage/sqlpackage
 ENV PATH="/opt/sqlpackage:${PATH}"
+ENV SQLPACKAGE=/opt/sqlpackage/sqlpackage
+
+# Clean up /tmp
+RUN rm -rf *
 
 WORKDIR /azp
 
