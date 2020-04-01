@@ -27,28 +27,36 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 WORKDIR /tmp
 
 # Az CLI
-RUN curl -sL https://packages.microsoft.com/keys/microsoft.asc |     gpg --dearmor |     tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null
+RUN curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor | tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null
 RUN echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/azure-cli.list
 RUN apt-get update && apt-get install -y --no-install-recommends azure-cli
 
-# DotNet
+# Powershell Core
+RUN curl https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb --output packages-microsoft-prod.deb
+RUN add-apt-repository universe
+RUN dpkg -i packages-microsoft-prod.deb
 RUN apt-get update && apt-get install -y --no-install-recommends dotnet-sdk-3.1
-
-# Entity Framework & Powershell Core
-RUN dotnet tool install --global dotnet-ef \ 
-        dotnet tool install --global PowerShell
 ENV PATH="/root/.dotnet/tools:${PATH}"
 
-# Chromium
-RUN apt-get update && apt-get install -y --no-install-recommends chromium-browser
-ENV CHROME_BIN=/usr/bin/chromium-browser \
-        CHROME_PATH=/usr/lib/chromium/
+# Entity Framework & Powershell Core
+RUN dotnet tool install --global dotnet-ef
+RUN dotnet tool install --global PowerShell
 
 # Java Runtime
 RUN apt-get update && apt-get install -y --no-install-recommends default-jre
 
 # Python
 RUN apt-get update && apt-get install -y --no-install-recommends python python-dev python-pip python3 python3-dev python3-pip
+
+# Chromium
+RUN apt-get update && apt-get install -y --no-install-recommends chromium-browser
+ENV CHROME_BIN=/usr/bin/chromium-browser \
+        CHROME_PATH=/usr/lib/chromium/
+
+# Kubectl
+RUN curl -s https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key add -
+RUN echo "deb https://apt.kubernetes.io/ kubernetes-xenial main" | tee -a /etc/apt/sources.list.d/kubernetes.list
+RUN apt-get update && apt-get install -y --no-install-recommends kubectl
 
 # Clean up /tmp
 RUN rm -rf *
