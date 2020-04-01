@@ -26,22 +26,17 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 
 WORKDIR /tmp
 
-
 # Az CLI
 RUN curl -sL https://packages.microsoft.com/keys/microsoft.asc |     gpg --dearmor |     tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null
 RUN echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/azure-cli.list
 RUN apt-get update && apt-get install -y --no-install-recommends azure-cli
 
-# Powershell Core
-RUN curl https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb --output packages-microsoft-prod.deb
-RUN add-apt-repository universe
-RUN dpkg -i packages-microsoft-prod.deb
-RUN apt-get update && apt-get install -y --no-install-recommends powershell
-
 # DotNet
 RUN apt-get update && apt-get install -y --no-install-recommends dotnet-sdk-3.1
-RUN dotnet tool install --global dotnet-ef
+# Entity Framework & Powershell Core
+RUN dotnet tool install --global dotnet-ef \  dotnet tool install --global PowerShell
 ENV PATH="/root/.dotnet/tools:${PATH}"
+
 
 # Chromium
 RUN apt-get update && apt-get install -y --no-install-recommends chromium-browser
