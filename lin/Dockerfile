@@ -33,15 +33,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends azure-cli
 
 # DotNet
 RUN apt-get update && apt-get install -y --no-install-recommends dotnet-sdk-3.1
-# Entity Framework & Powershell Core
-RUN dotnet tool install --global dotnet-ef \  dotnet tool install --global PowerShell
-ENV PATH="/root/.dotnet/tools:${PATH}"
 
+# Entity Framework & Powershell Core
+RUN dotnet tool install --global dotnet-ef \ 
+        dotnet tool install --global PowerShell
+ENV PATH="/root/.dotnet/tools:${PATH}"
 
 # Chromium
 RUN apt-get update && apt-get install -y --no-install-recommends chromium-browser
-ENV CHROME_BIN=/usr/bin/chromium-browser
-ENV CHROME_PATH=/usr/lib/chromium/
+ENV CHROME_BIN=/usr/bin/chromium-browser \
+        CHROME_PATH=/usr/lib/chromium/
 
 # Mono
 RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
