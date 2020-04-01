@@ -44,11 +44,6 @@ RUN apt-get update && apt-get install -y --no-install-recommends chromium-browse
 ENV CHROME_BIN=/usr/bin/chromium-browser \
         CHROME_PATH=/usr/lib/chromium/
 
-# Mono
-RUN apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-keys 3FA7E0328081BFF6A14DA29AA6A19B38D3D831EF
-RUN "deb https://download.mono-project.com/repo/ubuntu stable-bionic main" | tee /etc/apt/sources.list.d/mono-official-stable.list
-RUN apt-get update && apt-get install -y --no-install-recommends mono-complete
-
 # Java Runtime
 RUN apt-get update && apt-get install -y --no-install-recommends default-jre
 
