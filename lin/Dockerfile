@@ -21,7 +21,8 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         gnupg \
         openssl \
         zip \
-        unzip
+        unzip \
+        && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp
 
@@ -37,7 +38,7 @@ RUN add-apt-repository universe
 RUN dpkg -i packages-microsoft-prod.deb
 RUN apt-get update && apt-get install -y --no-install-recommends powershell
 
-# Dotnet
+# DotNet
 RUN apt-get update && apt-get install -y --no-install-recommends dotnet-sdk-3.1
 RUN dotnet tool install --global dotnet-ef
 ENV PATH="/root/.dotnet/tools:${PATH}"
