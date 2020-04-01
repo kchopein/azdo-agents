@@ -46,7 +46,7 @@ RUN dotnet tool install --global PowerShell
 RUN apt-get update && apt-get install -y --no-install-recommends default-jre
 
 # Python
-RUN apt-get update && apt-get install -y --no-install-recommends python python-dev python-pip python3 python3-dev python3-pip
+RUN apt-get update && apt-get install -y --no-install-recommends python3 python3-dev python3-pip
 
 # Chromium
 RUN apt-get update && apt-get install -y --no-install-recommends chromium-browser
