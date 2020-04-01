@@ -65,9 +65,6 @@ RUN apt-key fingerprint 0EBFCD88
 RUN add-apt-repository  "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 RUN apt-get update && apt-get install -y --no-install-recommends docker-ce docker-ce-cli containerd.io
 
-# Powershell Az
-RUN pwsh -c "Install-Module Az -Force"
-
 # Sql Package
 RUN curl -Lq https://go.microsoft.com/fwlink/?linkid=873926 -o sqlpackage-linux-x64-latest.zip
 RUN unzip sqlpackage-linux-x64-latest.zip -d /opt/sqlpackage
