@@ -1,0 +1,14 @@
+#!/bin/bash
+# hooks/post_push
+# https://docs.docker.com/docker-cloud/builds/advanced/
+
+function add_tag() {
+    echo "[***] Adding tag ${1}"
+    docker tag $IMAGE_NAME $DOCKER_REPO:$1
+    docker push $DOCKER_REPO:$1
+}
+
+TAG=`date -u +%Y%m%d%H%M`
+
+echo "[***] Current Build: ${TAG}"
+add_tag $TAG
