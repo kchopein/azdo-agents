@@ -6,6 +6,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN echo "APT::Get::Assume-Yes \"true\";" > /etc/apt/apt.conf.d/90assumeyes
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
+        apt-utils \
         ca-certificates \
         software-properties-common \
         curl \
@@ -22,6 +23,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         openssl \
         zip \
         unzip \
+        && apt-get upgrade \
         && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /tmp
@@ -31,10 +33,14 @@ RUN curl -sL https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor |
 RUN echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/azure-cli.list
 RUN apt-get update && apt-get install -y --no-install-recommends azure-cli
 
-# Powershell Core
-RUN curl https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb --output packages-microsoft-prod.deb
+# SqlCmd
+RUN curl -s https://packages.microsoft.com/config/ubuntu/18.04/prod.list | tee /etc/apt/sources.list.d/msprod.list
+ENV ACCEPT_EULA=Y
+RUN apt-get update && apt-get install -y --no-install-recommends azure-cli mssql-tools unixodbc-dev
+ENV PATH="/opt/mssql-tools/bin:${PATH}"
+
+# .NET SDK
 RUN add-apt-repository universe
-RUN dpkg -i packages-microsoft-prod.deb
 RUN apt-get update && apt-get install -y --no-install-recommends dotnet-sdk-3.1
 ENV PATH="/root/.dotnet/tools:${PATH}"
 
